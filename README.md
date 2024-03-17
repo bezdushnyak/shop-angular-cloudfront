@@ -1,3 +1,11 @@
+# Links
+
+Shop hosted on S3 - http://shop-s3-hosting.s3-website.eu-north-1.amazonaws.com/
+
+Shop hosted on S3 + CloudFront - https://d38g0drw5tnk3q.cloudfront.net/
+
+Shop hosted on S3 + CloudFront using Serverless - https://d1ghs702ixkok5.cloudfront.net/
+
 # Shop Angular Cloudfront
 
 Angular version: ~12.
