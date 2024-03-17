@@ -1,0 +1,16 @@
+service: shop-s3-serverless-finch
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  profile: serverless
+
+plugins:
+  - serverless-finch
+
+custom:
+  client:
+    bucketName: shop-s3-hosting
+    distributionFolder: dist/app
+    manageResources: false
