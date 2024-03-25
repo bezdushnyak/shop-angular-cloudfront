@@ -97,6 +97,11 @@ resources:
             DefaultTTL: 0
           ViewerCertificate:
             CloudFrontDefaultCertificate: "true"
+          CustomErrorResponses:
+            - ErrorCachingMinTTL: 10
+              ErrorCode: 403
+              ResponseCode: 200
+              ResponsePagePath: /index.html
 
   Outputs:
     WebAppS3BucketOutput:
