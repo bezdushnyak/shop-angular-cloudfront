@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { Product } from '../../products/product.interface';
 import { ProductsService } from '../../products/products.service';
 import { ManageProductsService } from './manage-products.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-manage-products',
