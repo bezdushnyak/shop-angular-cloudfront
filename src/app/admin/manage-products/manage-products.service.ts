@@ -1,7 +1,8 @@
 import { Injectable, Injector } from '@angular/core';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, Observable, catchError, throwError } from 'rxjs';
 import { ApiService } from '../../core/api.service';
 import { switchMap } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class ManageProductsService extends ApiService {
@@ -18,6 +19,7 @@ export class ManageProductsService extends ApiService {
     }
 
     return this.getPreSignedUrl(file.name).pipe(
+      catchError((e: unknown) => this.handleError(e)),
       switchMap((url) =>
         this.http.put(url, file, {
           headers: {
@@ -29,13 +31,45 @@ export class ManageProductsService extends ApiService {
     );
   }
 
+  private handleError(error: unknown) {
+    const httpResponseError = error as HttpErrorResponse;
+
+    let errorMessage = '';
+    switch (httpResponseError.status) {
+      case 401:
+        errorMessage = 'Authorization header is not set';
+        break;
+      case 403:
+        errorMessage = 'Access denied, authorization header is not valid';
+        break;
+    }
+
+    if (errorMessage) {
+      alert(errorMessage);
+    }
+
+    return throwError(() => new Error(httpResponseError.message));
+  }
+
   private getPreSignedUrl(fileName: string): Observable<string> {
     const url = this.getUrl('import', 'import');
+
+    const authToken: string | null = localStorage.getItem(
+      'authorization_token'
+    );
+
+    const headers: Record<string, string> = {};
+    if (authToken) {
+      headers.Authorization = `Basic ${localStorage.getItem(
+        'authorization_token'
+      )}`;
+    }
 
     return this.http.get<string>(url, {
       params: {
         name: fileName,
       },
+      headers,
     });
   }
 }
